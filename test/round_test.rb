@@ -3,6 +3,7 @@ require 'Minitest/pride'
 require './lib/deck'
 require './lib/card'
 require './lib/round'
+require './lib/turn'
 
 class RoundTest < Minitest::Test
 
@@ -49,8 +50,9 @@ class RoundTest < Minitest::Test
     deck = Deck.new([card_1, card_2, card_3])
     round = Round.new(deck)
     # require 'pry'; binding.pry
+    turn = Turn.new("Juneau", card_1)
     new_turn = round.take_turn("Juneau")
-    assert_equal 
+    assert_equal turn, new_turn
     #=> #<Turn:0x00007f99842f09e8 @card=#<Card:0x00007f800e29f0c9 @question=""What is the capital of Alaska?", @answer="Juneau", @category=:Geography>, @guess="Juneau">
   end
 

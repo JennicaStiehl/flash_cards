@@ -12,4 +12,7 @@ class Round
     @deck.cards.last
   end
 
+  def take_turn(guess)
+    @turns.guess = guess
+  end
 end
