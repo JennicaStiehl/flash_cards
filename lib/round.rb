@@ -1,5 +1,4 @@
 class Round
-
   attr_reader :deck,
               :turns
 
@@ -12,7 +11,13 @@ class Round
     @deck.cards.last
   end
 
-  def take_turn(guess)
-    @turns.guess = guess
+  def take_turn(turn)
+    @turns << turn
+    @turns.last
   end
+
+  def number_correct
+    @turns.count
+  end
+
 end
