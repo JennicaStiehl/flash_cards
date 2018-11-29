@@ -53,22 +53,11 @@ class RoundTest < Minitest::Test
     card_3 = Card.new("Describe in words the exact direction that is 697.5° clockwise from due north?", "North north west", :STEM)
     deck = Deck.new([card_1, card_2, card_3])
     round = Round.new(deck)
-    turn = Turn.new("Juneau", card_1)
-    new_turn = round.take_turn(turn)
+    new_turn = round.take_turn("Juneau")
 
-    assert_equal turn, new_turn
-  end
-
-  def test_it_creates_a_new_turn
-    card_1 = Card.new("What is the capital of Alaska?", "Juneau", :Geography)
-    card_2 = Card.new("The Viking spacecraft sent back to Earth photographs and reports about the surface of which planet?", "Mars", :STEM)
-    card_3 = Card.new("Describe in words the exact direction that is 697.5° clockwise from due north?", "North north west", :STEM)
-    deck = Deck.new([card_1, card_2, card_3])
-    round = Round.new(deck)
-    turn = Turn.new("Juneau", card_1)
-    new_turn = round.take_turn(turn)
-
-    assert_equal Turn, new_turn.class
+    assert_instance_of Turn, new_turn
+    assert_equal "Juneau", new_turn.guess
+    assert_equal card_3, new_turn.card
   end
 
   def test_the_new_turns_guess_is_correct
@@ -77,8 +66,8 @@ class RoundTest < Minitest::Test
     card_3 = Card.new("Describe in words the exact direction that is 697.5° clockwise from due north?", "North north west", :STEM)
     deck = Deck.new([card_1, card_2, card_3])
     round = Round.new(deck)
-    turn = Turn.new("Juneau", card_1)
-    new_turn = round.take_turn(turn)
+    # turn = Turn.new("Juneau", card_1)
+    new_turn = round.take_turn("North north west")
 
     assert_equal true, new_turn.correct?
   end
@@ -90,9 +79,9 @@ class RoundTest < Minitest::Test
     deck = Deck.new([card_1, card_2, card_3])
     round = Round.new(deck)
     turn = Turn.new("Juneau", card_1)
-    new_turn = round.take_turn(turn)
+    new_turn = round.take_turn("Juneau")
 
-    assert_equal [turn], round.turns
+    assert_equal [new_turn], round.turns
   end
 
   def test_it_knows_number_correct_guesses
@@ -101,8 +90,7 @@ class RoundTest < Minitest::Test
     card_3 = Card.new("Describe in words the exact direction that is 697.5° clockwise from due north?", "North north west", :STEM)
     deck = Deck.new([card_1, card_2, card_3])
     round = Round.new(deck)
-    turn = Turn.new("Juneau", card_1)
-    new_turn = round.take_turn(turn)
+    new_turn = round.take_turn("North north west")
 
     assert_equal 1, round.number_correct
   end
@@ -112,10 +100,8 @@ class RoundTest < Minitest::Test
     card_2 = Card.new("The Viking spacecraft sent back to Earth photographs and reports about the surface of which planet?", "Mars", :STEM)
     deck = Deck.new([card_1, card_2])
     round = Round.new(deck)
-    turn = Turn.new("Juneau", card_1)
-    turn_2 = Turn.new("Mars", card_2)
-    new_turn_1 = round.take_turn(turn)
-    new_turn_2 = round.take_turn(turn_2)
+    new_turn_1 = round.take_turn("Juneau")
+    new_turn_2 = round.take_turn("Mars")
 
     assert_equal card_2, round.current_card
   end
@@ -126,34 +112,40 @@ class RoundTest < Minitest::Test
     card_3 = Card.new("Describe in words the exact direction that is 697.5° clockwise from due north?", "North north west", :STEM)
     deck = Deck.new([card_1, card_2, card_3])
     round = Round.new(deck)
-    turn = Turn.new("Juneau", card_1)
-    turn_2 = Turn.new("Mars", card_2)
-    turn_3 = Turn.new("Venus", card_3)
-    new_turn = round.take_turn(turn)
-    new_turn_2 = round.take_turn(turn_2)
-    new_turn_3 = round.take_turn(turn_3)
+    new_turn = round.take_turn("Juneau")
 
-    assert_equal turn_3, round.take_turn(turn_3)
+    assert_instance_of Turn, new_turn #, round.take_turn("North north west")
+    #=> #<Turn:0x00007f99842f09e8 @card=#<Card:0x00007f800e29f0c9 @question=""What is the capital of Alaska?", @answer="Juneau", @category=:Geography>, @guess="Juneau">
   end
 
-  def test_it_can_count_guesses
+  def test_it_can_count_turns
     card_1 = Card.new("What is the capital of Alaska?", "Juneau", :Geography)
     card_2 = Card.new("The Viking spacecraft sent back to Earth photographs and reports about the surface of which planet?", "Mars", :STEM)
     deck = Deck.new([card_1, card_2])
     round = Round.new(deck)
     turn = Turn.new("Juneau", card_1)
     turn_2 = Turn.new("Mars", card_2)
-    new_turn = round.take_turn(turn)
+    new_turn = round.take_turn("guess")
     new_turn_2 = round.take_turn(turn_2)
 
-    assert_equal 2, round.guesses.count
+    assert_equal 2, round.turns.count
+  end
+
+  def test_it_can_give_feedback
+    card_1 = Card.new("What is the capital of Alaska?", "Juneau", :Geography)
+    card_2 = Card.new("The Viking spacecraft sent back to Earth photographs and reports about the surface of which planet?", "Mars", :STEM)
+    deck = Deck.new([card_1, card_2])
+    round = Round.new(deck)
+    turn = Turn.new("Juneau", card_1)
+    turn_2 = Turn.new("Mars", card_2)
+    new_turn = round.take_turn("guess")
+    new_turn_2 = round.take_turn(turn_2)
+
+    assert_equal "Incorrect.", round.turns.last.feedback
   end
 
   def test_skip
     skip
-    round.guesses.last.feedback
-    #=> "Incorrect."
-
     round.number_correct
     #=> 1
 

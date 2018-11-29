@@ -7,15 +7,15 @@ class Round
   def initialize(deck)
     @deck = deck
     @turns = []
-    @guesses = []
+    # @guesses = []
   end
 
   def current_card
     @deck.cards.last
   end
 
-  def take_turn(turn)
-    @turns << turn
+  def take_turn(guess) #create turn instance
+    @turns << Turn.new(guess, self.current_card)
     @turns.last
   end
 
@@ -23,14 +23,16 @@ class Round
     @turns.count
   end
 
-  def guesses
-    @turns.map do |turn|
-      @guesses << turn.guess
-    end
-  end
+  # def guesses
+  #   binding.pry
+  #   @turns.map do |turn|
+  #     @guesses << turn.guess
+  #   end
+  # end
 
   def count
     @guesses.count
   end
+
 
 end
