@@ -57,7 +57,6 @@ class Round
       if turn.card.category == category
         counter += 1
       end
-      # binding.pry
     end
     counter
   end
@@ -68,10 +67,17 @@ class Round
 
   def percent_correct_by_category(category)
     correct = number_correct_by_category(category)
-    # binding.pry
-    # count = number_by_category(category)
     ((correct * 1.0) / number_by_category(category).to_f ) * 100
   end
+
+  def unique_categories
+    uniq_cat = []
+    @turns.each do |turn|
+      uniq_cat << turn.card.category
+    end
+    uniq_cat.uniq
+  end
+
 
   def start
     puts " "
@@ -90,14 +96,10 @@ class Round
     end
     puts "****** Game over! ******"
     puts "You had #{number_correct} out of #{count}."
-    results = {}
-    counter
+    unique_categories
     @turns.map do |turn|
-      # binding.pry
       category = turn.card.category
-      number_by_category(category)
       puts "#{category} - #{(percent_correct_by_category(category)).to_i} % correct"
-
     end
   end
 
