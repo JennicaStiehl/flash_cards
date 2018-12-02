@@ -1,9 +1,4 @@
-require 'Minitest/autorun'
-require 'Minitest/pride'
-require './lib/deck'
-require './lib/card'
-require './lib/round'
-require './lib/turn'
+require './test/test_helper'
 
 class RoundTest < Minitest::Test
 

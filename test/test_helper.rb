@@ -1,0 +1,6 @@
+require 'Minitest/autorun'
+require 'Minitest/pride'
+require './lib/deck'
+require './lib/card'
+require './lib/round'
+require './lib/turn'

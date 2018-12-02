@@ -9,6 +9,8 @@ class Round
     @deck = deck
     @turns = []
     @values = []
+
+
   end
 
   def current_card
@@ -70,5 +72,34 @@ class Round
     # count = number_by_category(category)
     ((correct * 1.0) / number_by_category(category).to_f ) * 100
   end
+
+  def start
+    puts " "
+    puts "Welcome! You're playing with 4 cards."
+    puts "-------------------------------------------------"
+
+    counter = 0
+    4.times do
+      counter += 1
+      puts " "
+      puts "This is card number #{counter} out of 4."
+      puts current_card.question
+      new_turn = take_turn(gets.chomp)
+      new_turn.correct?
+      puts new_turn.feedback
+    end
+    puts "****** Game over! ******"
+    puts "You had #{number_correct} out of #{count}."
+    results = {}
+    counter
+    @turns.map do |turn|
+      # binding.pry
+      category = turn.card.category
+      number_by_category(category)
+      puts "#{category} - #{(percent_correct_by_category(category)).to_i} % correct"
+
+    end
+  end
+
 
 end
