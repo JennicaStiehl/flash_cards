@@ -12,7 +12,7 @@ class Turn
     if @card.answer.class == Integer
       @guess.to_i == @card.answer.to_i
     else
-      @guess == @card.answer
+      @guess.downcase == @card.answer.downcase
     end
   end
 
