@@ -15,7 +15,6 @@ class Round
 
   def current_card
     @deck.cards[(self.count)]
-    # @deck.cards.last
   end
 
   def take_turn(guess)
@@ -55,7 +54,7 @@ class Round
         counter += 1
       end
     end
-    counter
+      counter #hsh #
   end
 
   def percent_correct
@@ -63,19 +62,20 @@ class Round
   end
 
   def percent_correct_by_category(category)
-    # binding.pry
     correct = number_correct_by_category(category)
+    # new_correct = correct.sum
     total = number_by_category(category)
+    # new_total = total.sum
     (correct / total.to_f ) * 100
   end
 
-  def unique_categories
-    uniq_cat = []
-    @turns.each do |turn|
-      uniq_cat << turn.card.category
-    end
-    uniq_cat.uniq
-  end
+  # def unique_categories
+  #   uniq_cat = []
+  #   @turns.each do |turn|
+  #     uniq_cat << turn.card.category
+  #   end
+  #   uniq_cat.uniq
+  # end
 
 
   def start
@@ -96,10 +96,13 @@ class Round
     puts "****** Game over! ******"
     puts "You had #{number_correct} out of #{count} for a total score of #{percent_correct.round}%."
     # unique_categories
-    @turns.map do |turn|
+    output = []
+    @turns.each do |turn|
+      # binding.pry
       category = turn.card.category
-      puts "#{category} - #{(percent_correct_by_category(category)).to_i} % correct"
+      output << "#{category} - #{(percent_correct_by_category(category))} % correct"
     end
+    puts output
   end
 
 
