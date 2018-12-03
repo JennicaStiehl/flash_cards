@@ -27,7 +27,6 @@ class Round
   def number_correct
     total = 0
     @turns.each do |turn|
-      # binding.pry
       if turn.correct?
         total += 1
       end
@@ -43,11 +42,9 @@ class Round
     counter = 0
     @turns.each do |turn|
         if turn.correct? && turn.card.category == category
-          # @values << turn.card
           counter += 1
         end
       end
-    # binding.pry
     counter
   end
 
@@ -66,8 +63,10 @@ class Round
   end
 
   def percent_correct_by_category(category)
+    # binding.pry
     correct = number_correct_by_category(category)
-    ((correct * 1.0) / number_by_category(category).to_f ) * 100
+    total = number_by_category(category)
+    (correct / total.to_f ) * 100
   end
 
   def unique_categories
@@ -95,8 +94,8 @@ class Round
       puts new_turn.feedback
     end
     puts "****** Game over! ******"
-    puts "You had #{number_correct} out of #{count}."
-    unique_categories
+    puts "You had #{number_correct} out of #{count} for a total score of #{percent_correct.round}%."
+    # unique_categories
     @turns.map do |turn|
       category = turn.card.category
       puts "#{category} - #{(percent_correct_by_category(category)).to_i} % correct"

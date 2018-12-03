@@ -9,7 +9,11 @@ class Turn
   end
 
   def correct?
-    @guess == @card.answer
+    if @card.answer.class == Integer
+      @guess.to_i == @card.answer.to_i
+    else
+      @guess == @card.answer
+    end
   end
 
   def feedback
